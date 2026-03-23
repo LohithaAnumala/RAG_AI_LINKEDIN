@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Healthcare AI chatbot</title>
+	<style>
+		body{
+			font-family :Arial;
+			background:#f4f6f8;
+			text-align:center;
+			margin-top:100px;
+		
+	}
+		input{
+			width:300px;
+			padding:10px;
+			border-radius:5px;
+		}
+		button {
+			padding:10px;
+			background:#007bff;
+			color : white;
+			border:none;
+			border-radius:5px;
+		}
+		#res{
+			margin-top:20px;
+			width:60%;
+			margin-left:auto;
+			margin-right:auto;
+		}
+	</style>
+</head>
+
+<body>
+
+<h2>Healthcare chatbot </h2>
+<input id="q" placeholder="Ask your question">
+<button onclick="ask()">Ask</button>
+<div id="res"></div>
+
+<script>
+async function ask(){
+	const q=document.getElementById("q").value;
+	const response=await fetch("/ask",{
+	method:"POST",
+	headers:{"Content-Type":"application/json"},
+	body:JSON.stringify({question:q})
+	});
+	const data = await response.json();
+	document.getElementById("res").innerHTML=`
+	<p><b>Answer:</b> ${data.answer}</p>
+	<p><b>Faithfulness:</b>${data.faithfulness}</p>
+	<p><b>Relevance:</b>${data.relevance}</p>
+	<p><b>Latency:</b>${data.latency}</p>
+`;	
+}
+</script>
+</body>
+</html>
